@@ -176,7 +176,8 @@ function drawBreakout() {
   }
 
   // Gérer la raquette
-  paddles[0].pushDioptres();
+  //paddles[0].pushDioptres();
+  paddles[0].show();
   let y = mouseY-20;
   if(y < height/2){
     y= height/2;

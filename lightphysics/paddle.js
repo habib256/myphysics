@@ -40,38 +40,34 @@ function Paddle(x, y, w, h, options) {
         strokeWeight(1);
         stroke(255);
         fill(127);
-        rectMode(CENTER);
-        translate(pos.x, pos.y);
-        rotate(angle);
-        rect(0, 0, this.w, this.h);
+        translate(pos.x, pos.y+this.h/2);
+        beginShape();
+            vertex(0,0 );
+            vertex(this.w/2,0);
+            vertex(this.w/2,-this.h*2/3);
+            vertex(this.w/4,-this.h);
+            vertex(-this.w/4,-this.h);
+            vertex(-this.w/2,-this.h*2/3);
+            vertex(-this.w/2,0 );
+            vertex(0,0 );
+        endShape(CLOSE);
+
         pop();
     }
 
     this.pushDioptres = function () {
         let pos = this.body.position;
         let angle = this.body.angle;
-        // Fabriquer les dioptres de notre boite Rectangle a,b,c,d à mettre en rotation
-        let cx = this.body.position.x;
-        let cy = this.body.position.y;
-        let minx = cx - (this.w) / 2;
-        let maxx = cx + (this.w) / 2;
-        let miny = cy - (this.h) / 2;
-        let maxy = cy + (this.h) / 2;
-
-        let a = this.rotatePt(minx, miny, cx, cy, angle);
-        let b = this.rotatePt(maxx, miny, cx, cy, angle);
-        let c = this.rotatePt(maxx, maxy, cx, cy, angle);
-        let d = this.rotatePt(minx, maxy, cx, cy, angle);
-
-        let l1 = new Dioptre(a.x, a.y, b.x, b.y);
-        dioptres.push(l1);
-        let l2 = new Dioptre(b.x, b.y, c.x, c.y);
-        dioptres.push(l2);
-        let l3 = new Dioptre(c.x, c.y, d.x, d.y);
-        dioptres.push(l3);
-        let l4 = new Dioptre(d.x, d.y, a.x, a.y);
-        dioptres.push(l4);
+        // Fabriquer les dioptres de notre Paddle
+        dioptres.push(new Dioptre(pos.x-this.w/2, pos.y+this.h/2, pos.x+this.w/2, pos.y+this.h/2));
+        dioptres.push(new Dioptre(pos.x+this.w/2, pos.y+this.h/2, pos.x+this.w/2, pos.y+this.h/2-this.h*2/3));
+        dioptres.push(new Dioptre(pos.x+this.w/2, pos.y+this.h/2-this.h*2/3,pos.x+this.w/4,pos.y+this.h/2-this.h ));    
+        dioptres.push(new Dioptre(pos.x+this.w/4,pos.y+this.h/2-this.h,pos.x-this.w/4,pos.y+this.h/2-this.h ));  
+        dioptres.push(new Dioptre(pos.x-this.w/4,pos.y+this.h/2-this.h,pos.x-this.w/2, pos.y+this.h/2-this.h*2/3));  
+        dioptres.push(new Dioptre(pos.x-this.w/2, pos.y+this.h/2-this.h*2/3,pos.x-this.w/2,pos.y+this.h/2 ));
     }
+
+
 
     this.show = function () {
 
