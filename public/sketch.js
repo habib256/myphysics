@@ -129,7 +129,7 @@ function setupBreakout() {
   let ball_;
   // Mettre en place la balle
   var options = {
-    timeScale: 1
+    timeScale: 1 
   }
   ball_ = new Ball(width / 2, height / 2, 10, options);
   Body.setVelocity(ball_.body, { x: 3, y: 3 });
