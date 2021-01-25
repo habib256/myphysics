@@ -30,13 +30,10 @@ let images = [];
 let song = [];
 
 // Select your best color for the lights
-let colorPicker;
 let newcolor;
 
 // Will draw some graph a day ...
 let chartCanvas;
-
-
 
 function preload() {
   images.push(loadImage('graphics/mur01.jpg'));
@@ -68,10 +65,6 @@ function setup() {
   lights.push(light);
   selectimage = floor(random(0, images.length));
 
-  // Création du slider pour sélectionner la couleur
-  colorPicker = createColorPicker('#FFFFFF');
-  colorPicker.position(width - 60, 10);
-
   //create runner
   //var runner = Runner.create();
   //Runner.run(runner, engine);
@@ -80,19 +73,17 @@ function setup() {
   // Scènes à sélectionner
   // *************************
   setupBreakout();
-  //setupWalls();
-
 }
 
 function draw() {
   // Scènes à sélectionner
   // *************************
   drawBreakout();
-  //drawWalls();
-
 }
 
 function mouseClicked() {
+  newcolor = color(random(255), random(255), random(255));
+  newcolor.setAlpha(50);
   light = new Light(mouseX, mouseY, newcolor);
   lights.push(light);
 }
@@ -129,7 +120,7 @@ function setupBreakout() {
   let ball_;
   // Mettre en place la balle
   var options = {
-    timeScale: 1 
+    timeScale: 1
   }
   ball_ = new Ball(width / 2, height / 2, 10, options);
   Body.setVelocity(ball_.body, { x: 3, y: 3 });
@@ -160,10 +151,17 @@ function setupBreakout() {
       }
       for (i = 0; i < boxes.length - 4; i++) {
         if (id == boxes[i].body.id) {
+          if (random(0, 1) > 0.85) {
+            // Créer la Lumière
+            newcolor = color(random(255), random(255), random(255));
+            newcolor.setAlpha(50);
+            let light = new Light(boxes[i].body.position.x, boxes[i].body.position.y, newcolor);
+            lights.push(light);
+          }
           boxes[i].removeFromWorld();
           boxes.splice(i, 1);
-          song[0].play();
           i--;
+          song[0].play(); 
         }
       }
     });
@@ -186,9 +184,9 @@ function drawBreakout() {
   // Gérer la raquette
   //paddles[0].pushDioptres();
   paddles[0].show();
-  let y = mouseY-20;
-  if(y < height/2){
-    y= height/2;
+  let y = mouseY - 20;
+  if (y < height / 2) {
+    y = height / 2;
   }
   Body.setPosition(paddles[0].body, { x: mouseX, y: y });
 
@@ -202,9 +200,6 @@ function drawBreakout() {
   Body.setVelocity(balls[0].body, { x: vx, y: vy });
   balls[0].renderP5();
 
-  newcolor = colorPicker.color();
-  newcolor.setAlpha(50);
-  lights[0].updateColor(newcolor);
   lights[0].update(balls[0].getX(), balls[0].getY());
 
   for (let light of lights) {

@@ -31,11 +31,6 @@ function Box(x, y, w, h, options) {
 
     this.removeFromWorld = function () 
     {
-        if (random(0,1)> 0.85) {
-             // Créer la Lumière
-            let light = new Light(this.body.position.x, this.body.position.y, color(255, 255, 255, 50));
-            lights.push(light);
-        }
         World.remove(world, this.body);
     }
 
