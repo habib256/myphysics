@@ -26,8 +26,14 @@ let dioptres = [];
 //let rays = [];
 let lights = [];
 //let dynalights = [];
-let images = [];
+let backgrounds = [];
+let layers = [];
+let ballons = [];
+let boites = [];
+
 let song = [];
+
+
 
 // Select your best color for the lights
 let newcolor;
@@ -36,13 +42,22 @@ let newcolor;
 let chartCanvas;
 
 function preload() {
-  images.push(loadImage('graphics/mur01.jpg'));
-  images.push(loadImage('graphics/mur02.jpg'));
-  images.push(loadImage('graphics/mur03.jpg'));
-  images.push(loadImage('graphics/mur04.jpg'));
-  images.push(loadImage('graphics/mur05.jpg'));
-  images.push(loadImage('graphics/mur06.jpg'));
-  images.push(loadImage('graphics/mur07.jpg'));
+  boites.push(loadImage('graphics/carre.png'));
+  ballons.push(loadImage('graphics/ballon.png'));
+  ballons.push(loadImage('graphics/basket.png'));
+  ballons.push(loadImage('graphics/vaisseau.png'));
+  ballons.push(loadImage('graphics/smiley.png'));
+  ballons.push(loadImage('graphics/tennis.png'));
+  ballons.push(loadImage('graphics/petanque.png'));
+  ballons.push(loadImage('graphics/bowling.png'));
+  ballons.push(loadImage('graphics/soleil.png'));
+  backgrounds.push(loadImage('graphics/mur01.jpg'));
+  backgrounds.push(loadImage('graphics/mur02.jpg'));
+  backgrounds.push(loadImage('graphics/mur03.jpg'));
+  backgrounds.push(loadImage('graphics/mur04.jpg'));
+  backgrounds.push(loadImage('graphics/mur05.jpg'));
+  backgrounds.push(loadImage('graphics/mur06.jpg'));
+  backgrounds.push(loadImage('graphics/mur07.jpg'));
   song.push(loadSound('music/rebond.wav'));
   song.push(loadSound('music/rebond2.wav'));
   song.push(loadSound('music/rebond3.wav'));
@@ -53,6 +68,7 @@ function setup() {
   let x = 800;
   let y = 600;
   createCanvas(x, y);
+  //layers[0]= createGraphics(x, y);
   //chartCanvas = createGraphics(x, y);
   //lightCanvas = createGraphics(x, y);
 
@@ -63,7 +79,7 @@ function setup() {
   // Créer la Lumière
   let light = new Light(width / 2, height / 2, color(255, 255, 255, 50));
   lights.push(light);
-  selectimage = floor(random(0, images.length));
+  selectimage = floor(random(0, backgrounds.length));
 
   //create runner
   //var runner = Runner.create();
@@ -122,7 +138,7 @@ function setupBreakout() {
   var options = {
     timeScale: 1
   }
-  ball_ = new Ball(width / 2, height / 2, 10, options);
+  ball_ = new Ball(width / 2, height / 2, 8, options);
   Body.setVelocity(ball_.body, { x: 3, y: 3 });
   //Body.setAngularVelocity(ball_.body, 0.1);
   ball_.body.friction = 0;
@@ -161,12 +177,17 @@ function setupBreakout() {
           boxes[i].removeFromWorld();
           boxes.splice(i, 1);
           i--;
-          song[0].play(); 
+          song[1].play(); 
         }
       }
     });
   });
 }
+
+
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
 
 function drawBreakout() {
   background(0);
@@ -198,7 +219,7 @@ function drawBreakout() {
   if (v > 10) { vx = vx * 0.9; vy = vy * 0.9; }
   if (v < 3) { vx = vx * 1.2; vy = vy * 1.2; }
   Body.setVelocity(balls[0].body, { x: vx, y: vy });
-  balls[0].renderP5();
+
 
   lights[0].update(balls[0].getX(), balls[0].getY());
 
@@ -207,11 +228,16 @@ function drawBreakout() {
   }
 
   //BURN SOFT_LIGHT OVERLAY DARKEST MULTIPLY
-  blend(images[selectimage], 0, 0, images[selectimage].width, images[selectimage].height, 0, 0, width, height, BURN);
+  blend(backgrounds[selectimage], 0, 0, backgrounds[selectimage].width, backgrounds[selectimage].height, 0, 0, width, height, BURN);
+  //blend(layers[0], 0, 0, layers[0].width, layers[0].height, 0, 0, width, height, MULTIPLY);
 
   for (let light of lights) {
     light.showLighted();
   }
+ 
+ // image(balls[0].renderP5(), balls[0].getX()-balls[0].getR(), balls[0].getY()-balls[0].getR());
+  image(balls[0].render2D(ballons[7]), balls[0].getX(), balls[0].getY());
+ 
   Engine.update(engine);
 }
 

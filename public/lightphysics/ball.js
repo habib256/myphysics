@@ -16,6 +16,9 @@ function Ball(x, y, r, options) {
     this.getY = function () {
         return this.body.position.y;
     }
+    this.getR = function () {
+        return this.r;
+    }
     this.getVX = function () {
         return this.body.velocity.x;
     }
@@ -33,17 +36,31 @@ function Ball(x, y, r, options) {
     }
 
     this.renderP5 = function (){
-        push();
+
+        let c = color(0, 0, 0);
         let pos = this.body.position;
         let angle = this.body.angle;
-        noStroke();
-        fill(255,255,255,200);
-        translate(pos.x, pos.y);
-        circle(0, 0, this.r);
+        let layer = createGraphics(2*this.r, 2*this.r);
+        layer.noStroke();
+        layer.fill(255,255,255,255);
+        layer.circle(this.r, this.r, 2*this.r);
+        layer.stroke(color(0, 0, 0));
+        layer.line(this.r,this.r,this.r*cos(angle)+this.r,this.r*sin(angle)+this.r);
+        return layer;
+    }
+
+    this.render2D = function (ballimg){
+
         let c = color(0, 0, 0);
-        stroke(c);
-        line(0,0,this.r*cos(angle),this.r*sin(angle));
-        pop();
+        let pos = this.body.position;
+        let angle = this.body.angle;
+        let layer = createGraphics(2*this.r, 2*this.r);
+        layer.translate(this.r, this.r);
+        layer.imageMode(CENTER);
+        layer.rotate(angle);
+        layer.image(ballimg,0,0,2*this.r,2*this.r);
+        imageMode(CENTER);
+        return layer;
     }
 
     this.pushDioptres = function () {

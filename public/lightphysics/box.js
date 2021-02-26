@@ -48,6 +48,20 @@ function Box(x, y, w, h, options) {
         pop();
     }
 
+    this.render2D = function (img){
+
+        let c = color(0, 0, 0);
+        let pos = this.body.position;
+        let angle = this.body.angle;
+        let layer = createGraphics(2*this.r, 2*this.r);
+        layer.translate(this.r, this.r);
+        layer.imageMode(CENTER);
+        layer.rotate(angle);
+        layer.image(img,0,0,2*this.r,2*this.r);
+        imageMode(CENTER);
+        return layer;
+    }
+
     this.pushDioptres = function () {
         let pos = this.body.position;
         let angle = this.body.angle;
